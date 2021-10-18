@@ -58,15 +58,15 @@ int main()
 	plotSignal(impResponseFIR_Coeff_f32_cf_4kHz, FIR_FILTER_LENGTH, &impResponse);
 	plotSignal(inputSignal_f32_1kHz_15kHz, SIG_LENGTH_1kHz_15kHz, &inputSignal);
 	
-	arrCopyAndPadd(x, inputSignal_f32_1kHz_15kHz, FIR_FILTER_LENGTH, SIG_LENGTH_1kHz_15kHz);							 /* padded x input with Lh - 1 zeros both sides */
-	arrReverse(impResponseFIR_Coeff_f32_cf_4kHz, FIR_FILTER_LENGTH);																			 /* impulse signal reversing */
+	arrCopyAndPadd(x, inputSignal_f32_1kHz_15kHz, FIR_FILTER_LENGTH, SIG_LENGTH_1kHz_15kHz);					/* padded x input with Lh - 1 zeros both sides */
+	arrReverse(impResponseFIR_Coeff_f32_cf_4kHz, FIR_FILTER_LENGTH);								/* impulse signal reversing */
 	
 	/* computing y[n] = sum(k=0 -> Lh -1: h[n]*x[n-k]) */
 	convXH(impResponseFIR_Coeff_f32_cf_4kHz, FIR_FILTER_LENGTH, x, y);
 	plotConvSignal(y, LY, &convxh);
 	
 	arrCopyAndPadd(h, impResponseFIR_Coeff_f32_cf_4kHz, SIG_LENGTH_1kHz_15kHz, FIR_FILTER_LENGTH);					/* padded h impulse response with Lx - 1 zeros both sides */
-	arrReverse(inputSignal_f32_1kHz_15kHz, SIG_LENGTH_1kHz_15kHz);																					/* input signal signal reversing */
+	arrReverse(inputSignal_f32_1kHz_15kHz, SIG_LENGTH_1kHz_15kHz);									/* input signal signal reversing */
 	
 	/* computing y[n] = sum(k=0 -> Lx -1: x[n]*h[n-k]) */
 	convHX(h, inputSignal_f32_1kHz_15kHz, SIG_LENGTH_1kHz_15kHz, y);
@@ -74,14 +74,14 @@ int main()
 //	plotSignal(inputSignal_f32_1kHz_15kHz, SIG_LENGTH_1kHz_15kHz, &inputSignal);
 	plotConvSignal(y, LY, &convhx);
 	
-	arrReverse(inputSignal_f32_1kHz_15kHz, SIG_LENGTH_1kHz_15kHz);																					/* input signal signal reversing */
+	arrReverse(inputSignal_f32_1kHz_15kHz, SIG_LENGTH_1kHz_15kHz);									/* input signal signal reversing */
 	convHX_DirectMN(impResponseFIR_Coeff_f32_cf_4kHz, FIR_FILTER_LENGTH, 
 	inputSignal_f32_1kHz_15kHz, SIG_LENGTH_1kHz_15kHz, y);
 	
 //	plotSignal(inputSignal_f32_1kHz_15kHz, SIG_LENGTH_1kHz_15kHz, &inputSignal);
 	plotConvSignal(y, LY, &convhx_mn);
 	
-	arrReverse(impResponseFIR_Coeff_f32_cf_4kHz, FIR_FILTER_LENGTH);																				/* impulse signal reversing */											
+	arrReverse(impResponseFIR_Coeff_f32_cf_4kHz, FIR_FILTER_LENGTH);																			/* impulse signal reversing */											
 	convHX_MatrixForm(impResponseFIR_Coeff_f32_cf_4kHz, FIR_FILTER_LENGTH, 
 	inputSignal_f32_1kHz_15kHz, SIG_LENGTH_1kHz_15kHz, y);
 	
@@ -149,7 +149,7 @@ void arrCopyAndPadd(float32_t *dest, float32_t *src, int offset, int signalLengt
  .... h[n] h[n-1].... h[1] h[0]......................						h[1-k]
  ..............................................h[n] h[n-1].........h[0] 	h[n-k] 
  [		Lh - 1		|				Lx				   |		Lh - 1	 ]
- [					| y[0] y[1]................................ y[Lx+Lh-1]  Yn=sum[m : x(k)h(n-k)]
+ [				| y[0] y[1]................................ y[Lx+Lh-1]  Yn=sum[m : x(k)h(n-k)]
 
  input: impulse response and input signal
  output: convolution result y[n]
@@ -178,8 +178,8 @@ void convXH( float32_t * h, int hLength, float32_t *x, float32_t *y)
  .... x[n] x[n-1]....x[1] x[0]......................						x[1-k] 
  ...............................................x[n] x[n-1].........x[0] 	x[n-k] 
  -------------------------------------------------------------------------
- [		Lx - 1		|				Lh				   |		Lx - 1	  ]
- [					| y[0] y[1]................................ y[Lx+Lh-1 ] Yn=sum[m : h(k)x(n-k)]
+ [	Lx - 1		|	Lh			|	Lx - 1	  ]
+ [			| y[0] y[1]................................ y[Lx+Lh-1 ] Yn=sum[m : h(k)x(n-k)]
 
  input: impulse response and input signal
  output: convolution result y[n]
@@ -208,8 +208,8 @@ void convHX( float32_t * h, float32_t *x, int xLength, float32_t *y)
  .... x[n] x[n-1]....x[1] x[0]......................						x[1-k] 
  ...............................................x[n] x[n-1].........x[0] 	x[n-k] 
  ------------------------------------------------------------------------
- [		Lx - 1		|				Lh				   |		Lx - 1	  ]
- [					| y[0] y[1]................................ y[Lx+Lh-1 ]  Yn=sum[m : h(k)x(n-k)]
+ [	Lx - 1	    |		Lh		       |	Lx - 1	  ]
+ [		    | y[0] y[1]................................ y[Lx+Lh-1 ]  Yn=sum[m : h(k)x(n-k)]
 
  input: impulse response and input signal
  output: convolution result y[n]
@@ -230,15 +230,15 @@ void convHX_DirectMN( float32_t * h, int hLength, float32_t *x, int xLength, flo
  /**********************convHX_MatrixForm*********************
  matrix form algorithm: y[n] = sum(n = i + j; i -> xLength; j -> hLength : h[j] * x[i])
 
-			 x[0].........x[1] .............. x[n-1] 
-		-------------------------------------------------
-h[0]	|  h[0]x[0]	  	h[0]x[1]			  h[0]x[n-1]
-h[1]	|  h[1]x[0]	  	h[1]x[1]			  h[1]x[n-1]
-.		|.................................................
-.		|.................................................
-.		|.................................................
-h[n-1]	|  h[n-1]x[0]	h[n-1]x[1]			  h[n-1]x[n-1]
-		--------------------------------------------------
+ x[0].........x[1] .............. x[n-1] 
+-------------------------------------------------
+h[0]	|  h[0]x[0]	  	h[0]x[1]	h[0]x[n-1]
+	h[1]	|  h[1]x[0]	  	h[1]x[1]	h[1]x[n-1]
+.	|.................................................
+.	|.................................................
+.	|.................................................
+							h[n-1]	|  h[n-1]x[0]	h[n-1]x[1]			  h[n-1]x[n-1]
+--------------------------------------------------
 
  input: impulse response and input signal
  output: convolution result y[n]
