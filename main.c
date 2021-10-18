@@ -148,8 +148,8 @@ void arrCopyAndPadd(float32_t *dest, float32_t *src, int offset, int signalLengt
  h[n] h[n-1]......... h[0] ..........................						h[-k]
  .... h[n] h[n-1].... h[1] h[0]......................						h[1-k]
  ..............................................h[n] h[n-1].........h[0] 	h[n-k] 
- [		Lh - 1		|				Lx				   |		Lh - 1	 ]
- [				| y[0] y[1]................................ y[Lx+Lh-1]  Yn=sum[m : x(k)h(n-k)]
+ [	Lh - 1	    |		Lx		      |		Lh - 1	 ]
+ [		    | y[0] y[1]................................ y[Lx+Lh-1]  Yn=sum[m : x(k)h(n-k)]
 
  input: impulse response and input signal
  output: convolution result y[n]
@@ -233,11 +233,11 @@ void convHX_DirectMN( float32_t * h, int hLength, float32_t *x, int xLength, flo
  x[0].........x[1] .............. x[n-1] 
 -------------------------------------------------
 h[0]	|  h[0]x[0]	  	h[0]x[1]	h[0]x[n-1]
-	h[1]	|  h[1]x[0]	  	h[1]x[1]	h[1]x[n-1]
+h[1]	|  h[1]x[0]	  	h[1]x[1]	h[1]x[n-1]
 .	|.................................................
 .	|.................................................
 .	|.................................................
-							h[n-1]	|  h[n-1]x[0]	h[n-1]x[1]			  h[n-1]x[n-1]
+h[n-1]	|  h[n-1]x[0]	       h[n-1]x[1]	h[n-1]x[n-1]
 --------------------------------------------------
 
  input: impulse response and input signal
