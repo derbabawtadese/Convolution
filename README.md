@@ -10,6 +10,10 @@
 	2. CPU clock source Freq: @168.00MHz using internal PLL
 	3. uController - STM32F407VGTx
 
+Screenshot:
+
+![FIR Filter and Convolution jpg](https://user-images.githubusercontent.com/67288180/138048065-211f89c6-b646-44ff-a55e-d9ed40be18ff.png)
+
  Author:
     Derbabaw Tadese
  Date: 
